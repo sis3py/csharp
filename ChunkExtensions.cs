@@ -19,7 +19,7 @@ namespace Lab.CSharp.Chunk
         /// Split the execution of a query containing .Contains(arg1, arg2, ..., argn) into chunks
         /// </summary>
         /// <typeparam name="T">The returned type</typeparam>
-        /// <typeparam name="TValue">The type of argument evalued by the .Contains() call.</typeparam>
+        /// <typeparam name="TValue">The type of argument evaluated by the .Contains() call.</typeparam>
         /// <param name="query">The main query.</param>
         /// <param name="chunkSize">The expected size for the chunks.</param>
         /// <returns>A List of <T> items.</T></returns>
@@ -40,12 +40,12 @@ namespace Lab.CSharp.Chunk
 
             IEnumerable<TValue> localList = GetMethodCallExpressionEnumerable<TValue>(containsCallExpression);
 
-            var result = new List<T>();
-            var chunkList = new List<TValue>();
-
             MethodInfo containsMethod = typeof(Enumerable).GetMethods(BindingFlags.Static | BindingFlags.Public)
                                                           .Single(p => p.Name == "Contains" && p.GetParameters().Count() == 2)
                                                           .MakeGenericMethod(typeof(TValue));
+
+            var result = new List<T>();
+            var chunkList = new List<TValue>();
 
             var parameter = new List<Expression>();
             parameter.Add(Expression.Constant(chunkList));
